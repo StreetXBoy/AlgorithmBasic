@@ -1,0 +1,64 @@
+int fastPow(int a, int n) {
+    int res = 1;
+    while (n){
+        if (n & 1)res *= a;
+        a *= a;
+        n >>= 1;
+    }
+    return res;
+}
+
+
+
+int fastPow(int a, int n) {
+    if (n == 1)return a;
+    int tmp = fastPow(a, n / 2);
+    if (n % 2 == 1)return tmp * tmp * a;
+    else return tmp * tmp;
+}
+
+2）快速幂取模
+an %m=(a%m)n %m
+
+
+
+矩阵快速幂同理
+
+
+const int mxn = 2;//矩阵的阶
+const int mod = 1e9;
+struct  Matrix
+{
+    int m[mxn][mxn];
+    Matrix() {
+        memset(m, 0, sizeof(m));
+    }
+};
+Matrix Multi(Matrix a, Matrix b) {
+    Matrix res;
+    for (int i = 0; i < mxn; i++)
+        for (int j = 0; j < mxn; j++)
+            for (int k = 0; k < mxn; k++)
+                res.m[i][j] = (res.m[i][j] + a.m[i][k] * b.m[k][j]) % mod;
+    return res;
+}
+Matrix fastPower(Matrix a, int n) {
+    Matrix res;
+    for (int i = 0; i < mxn; i++)
+        res.m[i][i] = i;
+    while (n)
+    {
+        if (n & 1)
+            res = Multi(res, a);
+        a = Multi(a, a);
+        n >>= 1;
+    }
+    return res;
+}
+
+
+
+
+
+
+https://www.cnblogs.com/liuwenyao/p/8514920.html

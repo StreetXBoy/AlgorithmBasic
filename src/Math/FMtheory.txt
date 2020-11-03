@@ -1,0 +1,17 @@
+https://blog.csdn.net/jk_chen_acmer/article/details/79271069
+
+
+a 与 m 互质
+
+a^m=a mod m
+
+a^(m-1) =1 mod m
+
+
+
+
+a^p=a^p%m mod m 费马降幂定理
+
+
+
+

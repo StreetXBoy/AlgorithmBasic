@@ -1,0 +1,29 @@
+public class PrimeSelect2 {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		//定义vis数组  true： 表示不是素数  false：表示是素数
+		boolean[] vis = new boolean[101];//默认初始值为false，即默认全为素数
+		int prime[] = new int[100];//存放素数
+		int cnt = 0; // 素数的数量
+		vis[0] = vis[1] = true; //0,1 不是素数
+		for(int i = 2; i <= 100; i++) {
+			if(!vis[i]) {
+				prime[cnt++] = i;
+			}
+			for(int j = 0; j < cnt && prime[j]*i <= 100; j++) {
+				vis[prime[j]*i] = true;
+				if(0 == i%prime[j]) break;
+			}
+		}
+		for (int i = 0; i <= 100; i++) {
+			if(!vis[i])
+			System.out.print(i + " ");
+		}
+	}
+
+}
+
+
+
+https://blog.csdn.net/qq_41536350/article/details/90751109?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.channel_param&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.channel_param

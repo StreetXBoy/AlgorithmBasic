@@ -1,0 +1,46 @@
+https://blog.csdn.net/jk_chen_acmer/article/details/81505699
+
+1. 欧几里得算法
+欧几里德算法又称辗转相除法，用于计算两个整数a , b a,ba,b的最大公约数。
+
+
+
+2. 扩展欧几里得
+必然存在整数对x,y
+gcd(a,b)=ax+by
+
+gcd(b,a%b)= b*x1+a*y1=ax+by=gcd(a,b)
+
+x=y1;
+y=x1;
+交换！！！
+
+
+int gcd(int a,int b,int &x,int &y){
+    if (b==0){
+        x=1,y=0;
+        return a;
+    }
+    int q=gcd(b,a%b,y,x);
+    y-=a/b*x;
+    return q;
+}
+
+ax+by=gcd(a,b)=a*x*c/gcd(a,b)+b*y*c/gcd(a,b)=c
+
+x1=x/gcd(a,b)
+
+x2=y/gcd(a,b)
+
+====>ax1+by1=c 问题！！
+
+如何求最小非负整数解?
+
+x*c/gcd(a,b)    ======>   ax+by=c问题
+
+如果求gcd(a,b)=ax+by如何求最小非负整数解?  ===》拉升到x [0,b/gvd(a,b)]
+
+x=(x%d+d)%d
+
+
+
