@@ -1,0 +1,48 @@
+本文讨论一棵最简单的trie树，基于英文26个字母组成的字符串，
+
+
+------------------------------------------------------------>
+
+
+#include<cstdio>
+#include<cstdlib>
+using namespace std;
+char s[11];
+struct Trie{
+    Trie* next[26];          //结构体指针 有26种字符
+    int sum;                //单词出现的次数
+    Trie(){                    //构造函数 便于初始化
+        for(int i=0;i<26;i++){             //初始化
+            next[i]=NULL;        //初始时，每个字符所对应数组下标中的指针为空
+        }
+        sum=0;
+    }
+}root;
+void insert(char* s)   //创建字典树 在字典树上插入结点
+{
+    Trie* p=&root;            //从根结点开始遍历
+    for(int i=0;s[i];i++){         //遍历单词的每一个字符
+        if(p->next[s[i]-'a']==NULL){   //判断字符所对应结构体指针数组下标中的指针是否为空
+            p->next[s[i]-'a']=new Trie;  //如果为空 就新建一个结点
+        }
+        p=p->next[s[i]-'a'];   //将指针指向当前字符所对应的结构体指针数组的下标所对应的地址
+        p->sum++;
+    }
+}
+int find(char* s)        //查找单词
+{
+    Trie* p=&root;       //从根结点开始遍历
+    for(int i=0;s[i];i++){      //遍历单词的每一个字符
+        if(p->next[s[i]-'a']==NULL)return 0;   // 如果下标所对应的指针为空 查找失败
+        else p=p->next[s[i]-'a'];   //如果不为空 遍历下一个字符 直至遍历结束
+    }
+    return p->sum;   //返回遍历完的最后一个结点中所对应的数据 代表当前当前单词出现的次数
+}
+int main(){
+    while(gets(s)&&s[0]!='\0')             //读取字典中的单词 将其插入字典树中
+        insert(s);
+    while(scanf("%s",s)==1){           //在字典树中查找单词出现的次数
+        printf("%d\n",find(s));
+    }
+    return 0;
+}

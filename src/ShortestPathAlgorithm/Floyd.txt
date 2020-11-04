@@ -1,0 +1,38 @@
+算法思想
+很容易理解，我们从一个点i到另一个点j,无非就两种走法
+
+直接从i到j
+通过中间点k中转，i->k->j
+所以我们就遍历所有情况，如果通过某个中转点距离小于直接到达的距离，就更新这两点间的距离。
+
+
+
+#define MAX 65535
+int Chara[N][N],p[N][N];
+int n,m;
+void Floyd()
+{
+   for(int i=0;i<n;i++)
+    {
+      for(int j=0;j<n;j++)
+       {
+          p[i][j]=j;//初始化
+        }
+    }
+    for(int k=0;k<n;k++)
+    {
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                if(Chara[i][k] == MAX || Chara[k][j] == MAX) continue;
+                if(Chara[i][j] > Chara[i][k] + Chara[k][j])
+                    {
+                    //如果经过下标k顶点路径比原两点间路径更短
+                    //将当前两点权值设为更小的那一个
+                      Chara[i][j] = Chara[i][k] + Chara[k][j];
+                      p[i][j]=p[i][k];//路径设置经过下标k的顶点
+            }
+        }
+    }
+}
