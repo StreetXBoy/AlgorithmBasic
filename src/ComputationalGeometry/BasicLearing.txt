@@ -1,0 +1,155 @@
+
+计算三角形面积
+
+
+S=sqrt(p(p-a)(p-b)(p-c))  p=(a+b+c)/2
+
+--------------------------------------->
+
+计算几何之凸包问题：
+
+凸包（Convex Hull）是计算几何中的一类极其重要的问题，计算几何中的很多问题都可以转化为凸包问题来解决。
+
+直观的来讲，凸包就像是在一块钉有若干个钉子的木板上撑开一根橡皮筋来讲所有钉子围起来一样。
+简单的说,在一个二维平面内有n个点的集合S，现在要你选择一个点集C，C中的点构成一个凸多边形G，使得S集合的所有点要么在G内，要么在G上，并且保证这个凸多边形的面积最小，我们要求的就是这个C集合。
+
+https://www.cnblogs.com/wuwangchuxin0924/p/6223152.html
+
+Graham扫描法：
+
+1.取y坐标最小的一点，作为p0，显然p0一定在凸包上。
+
+2.将p0作为坐标系原点，其他点按极角从小到大排序，从p1开始编号。
+
+　3.从小到大遍历所有点：显然[p0, p1] 在凸包中
+
+4.连接p1, p2的时候需要判断：p0->p1 叉乘 p1->p2 是否大于0：
+
+　　　　> 0 p1->p2 在 p0->p1 夹角小于π，物理意义：p1->p2 在 p0->p1的左边，满足凸多边形定义。
+
+　　　　= 0 p1->p2 与 p0->p1 共线，同向满足，相反不满足。
+
+　　　　< 0 p1->p2 在 p0->p1 夹角大于π，不满足
+
+
+5.连接p2, p3 向量p2->p3在p1->p2左边，满足定义，当连接p3, p4的时候，发现不满足定义了，此时要放弃p3, 从p2开始回溯，找到第一个满足要求的点。
+
+
+6.以此类推，知道回到p0点。
+
+
+/****************************凸包模板*******************************/
+
+const double eps = 1e-8;
+
+int sgn(double x) {
+  if (fabs(x) < eps)
+    return 0;
+
+  if (x < 0)
+    return -1;
+  else
+    return 1;
+}
+
+struct Point {
+  double x, y;
+  Point() {}
+  Point(double _x, double _y) {
+    x = _x;
+    y = _y;
+  }
+
+  Point operator-(const Point &b) const { return Point(x - b.x, y - b.y); }
+  //叉积
+  double operator^(const Point &b) const { return x * b.y - y * b.x; }
+  //点积
+  double operator*(const Point &b) const { return x * b.x + y * b.y; }
+  void input() {
+    scanf("%lf%lf", &x, &y);
+  }
+};
+
+struct Line {
+  Point s, e;
+  Line() {}
+  Line(Point _s, Point _e) {
+    s = _s;
+    e = _e;
+  }
+};
+
+//*两点间距离
+double dist(Point a, Point b) { return sqrt((a - b) * (a - b)); }
+
+/*
+ * 求凸包，Graham算法
+ * 点的编号0~n-1
+ * 返回凸包结果Stack[0~top-1]为凸包的编号
+ */
+
+const int MAXN = 1010;
+Point List[MAXN];
+int Stack[MAXN];  //用来存放凸包的点
+int top;  //表示凸包中点的个数
+
+//相对于List[0]的极角排序
+//why ^??   因为^重载为叉积
+bool _cmp(Point p1, Point p2) {
+  double tmp = (p1 - List[0]) ^(p2 - List[0]);
+  if (sgn(tmp) > 0)
+    return true;
+  else if (sgn(tmp) == 0 && sgn(dist(p1, List[0]) - dist(p2, List[0])) <= 0)
+    return true;
+  else
+    return false;
+}
+
+void Graham(int n) {
+  Point p0;
+  int k = 0;
+  p0 = List[0];
+  //找最下边的一个点
+  for (int i = 1; i < n; i++) {
+    if ((p0.y > List[i].y) || (p0.y == List[i].y && p0.x > List[i].x)) {
+      p0 = List[i];
+      k = i;
+    }
+  }
+
+  swap(List[k], List[0]);
+  sort(List + 1, List + n, _cmp);
+  if (n == 1) {
+    top = 1;
+    Stack[0] = 0;
+    return;
+  }
+
+  if (n == 2) {
+    top = 2;
+    Stack[0] = 0;
+    Stack[1] = 1;
+    return;
+  }
+
+  Stack[0] = 0;
+  Stack[1] = 1;
+  top = 2;
+  for (int i = 2; i < n; i++) {
+    while (top > 1 &&
+        sgn((List[Stack[top - 1]] - List[Stack[top - 2]]) ^ (List[i] - List[Stack[top - 2]])) <= 0)
+      top--;
+    Stack[top++] = i;
+  }
+}
+
+/****************************凸包模板*******************************/
+
+https://www.cnblogs.com/wuwangchuxin0924/p/6223152.html
+
+
+// java不支持操作符重载！！！！
+
+
+
+

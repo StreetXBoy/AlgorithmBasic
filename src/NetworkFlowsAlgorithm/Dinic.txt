@@ -1,0 +1,123 @@
+https://www.cnblogs.com/graytido/p/10809211.html
+
+
+分层图
+
+为Dinic算法引入了一个叫做分层图的概念。具体就是对于每一个点，我们根据从源点开始的bfs序列，为每一个点分配一个深度，然后我们进行若干遍dfs寻找增广路，每一次由u推出v必须保证v的深度必须是u的深度+1。
+
+
+1、首先进行bfs分层网络
+2、进行dfs多路增广，并且记录残量网络和流
+量。
+3、重复上述过程直到不存在从s到t的路径为
+止。将所有dfs的结果累加起来就是答案。将
+每一次的增广路效果叠加起来就是图上每条
+边的流量。
+
+--------------------------------------------------------》
+
+#include<cstring>
+#include<cstdio>
+#include<algorithm>
+#include<cmath>
+#include<queue>
+using namespace std;
+typedef long long ll;
+typedef unsigned long long ull;
+#define INF 0x3f3f3f3f
+const ll MAXN = 200 + 7;
+const ll MAXM = 1e3 + 7;
+const ll MOD = 1e9 + 7;
+const double pi = acos(-1);
+int cnt = -1, head[MAXM], dis[MAXN], cur[MAXM];
+int n, m;
+struct edge
+{
+    int to, value, net;
+} e[MAXM << 1]; ///共有n*2条边
+void add(int from, int to, int value)
+{ ///链式前向星
+    cnt++;
+    e[cnt].to = to;
+    e[cnt].value = value;
+    e[cnt].net = head[from];
+    head[from] = cnt;
+}
+int bfs(int st, int ed)
+{ ///建立层次图
+    queue<int> que;
+    memset(dis, -1, sizeof(dis));
+    dis[st] = 0;
+    que.push(st);
+    while (!que.empty())
+    {
+        int x = que.front();
+        que.pop();
+        for (int i = head[x]; i > -1; i = e[i].net)
+        {
+            int now = e[i].to;
+            if (dis[now] == -1 && e[i].value)
+            {
+                que.push(now);
+                dis[now] = dis[x] + 1;
+            }
+        }
+    }
+    return dis[ed] != -1;
+}
+int dfs(int x, int t, int maxflow)
+{
+    if (x == t)
+        return maxflow;
+    int ans = 0;
+    for (int i = cur[x]; i > -1; i = e[i].net)
+    { ///当前弧优化
+        int now = e[i].to;
+        if (dis[now] != dis[x] + 1 || e[i].value == 0 || ans >= maxflow)
+            continue;
+        cur[x] = i;
+        int f = dfs(now, t, min(e[i].value, maxflow - ans));
+        e[i].value -= f;
+        e[i ^ 1].value += f; ///反向边加流量
+        ans += f;
+    }
+    if (!ans)
+        dis[x] = -1; ///炸点优化
+    return ans;
+}
+int Dinic(int st, int ed)
+{
+    int ans = 0;
+    while (bfs(st, ed))
+    {
+        memcpy(cur, head, sizeof(head));
+        int k;
+        while ((k = dfs(st, ed, INF)))
+            ans += k;
+    }
+    return ans;
+}
+void init()
+{
+    cnt=-1;
+    memset(head,-1,sizeof(head));
+}
+int main()
+{
+    int t;
+    scanf("%d", &t);
+    for (int i = 1; i <= t; i++)
+    {
+        init();
+        scanf("%d%d", &n, &m);
+        while (m--)
+        {
+            int u, v, t;
+            scanf("%d%d%d", &u, &v, &t);
+            add(u, v, t);
+            add(v, u, 0);
+        }
+        printf("Case %d: %d\n", i, Dinic(1, n));
+    }
+    return 0;
+}
