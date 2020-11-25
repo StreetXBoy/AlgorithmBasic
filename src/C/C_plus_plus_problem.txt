@@ -1,0 +1,94 @@
+《-----------------String ??? 中的reverse不熟？？？-------------------------》
+源码如下：
+
+template <class BidirectionalIterator>
+void reverse (BidirectionalIterator first, BidirectionalIterator last)
+{
+    while ((first!=last)&&(first!=--last))
+    {
+        std::iter_swap (first,last);
+        ++first;
+    }
+}
+
+
+《---------char数组 ？？？？String 到底怎么互换？？？？？--------------------》
+
+字符数组转化成string类型
+char ch [] = "ABCDEFG";
+string str(ch);//也可string str = ch;
+
+将string类型转换为字符数组
+
+char buf[10];
+string str("ABCDEFG");
+strcpy(buf, str.c_str());
+
+
+注意优先使用printf否则有大坑！！！！！！！！！
+
+注意C_str函数！！！！！！
+
+《-----------------------动态分配内存？？？？--------------------------》
+
+c：
+int *p=(int*)malloc(n*sizeof(int));
+
+
+c++：
+int *a = new int[n]
+
+二维数组：
+int n;
+cin >> n;
+int **a = new int*[n];
+for(int i = 0 ;i < n; i++){
+	a[i] = new int[n]
+}
+
+《---------------------#include <bits/stdc++.h>万能大法好！！！！-------------------》
+包含所有#include <bits/stdc++.h>！！！！！！！！！头文件！！！！！
+
+
+
+《--------------------读一行和写一行？？？----------------------------------》
+c风格：
+gets()函数读取到\n（我们输入的回车）于是停止读取，但是它不会把\n包含到字符串里面去。然而，和它配合使用的puts函数，却在输出字符串的时候自动换行。
+
+c++风格:
+cin.getline应该就差不多等同于：
+
+cin.getline(c,length);
+
+for(int i=0;i<length;i++)c[i]=getchar();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
