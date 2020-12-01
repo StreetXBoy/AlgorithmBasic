@@ -1,0 +1,27 @@
+
+#include<iostream>
+#include<cstring>
+using namespace std;
+
+
+int main(void){
+    char a[80];
+    char b[80];
+    string c;
+    gets(a);
+    cout<<a<<endl;
+//    12 3
+//    12 3
+    cin.getline(b,50);
+    cout<<b<<endl;
+//    45 6
+//    45 6
+    getline(cin,c);
+    cout<<c<<endl;
+    //只能用string!!!!!!不能用char
+    char x[100];
+    strcpy(x,c.c_str());
+    printf("%5s",&x);
+    //how to convert string to char[]
+    return 0;
+}

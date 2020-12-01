@@ -36,7 +36,7 @@ public class CollectionVS_Arrays {
             str1[i]=list1.get(i);
         }
         //注意是get(i)与C++不同！！！
-        System.out.println(str1);
+        System.out.println(Arrays.toString(str1));
 
 
         //asList这不是最好的，因为asList()返回的列表的大小是固定的。事实上，返回的列表不是java.util.ArrayList，

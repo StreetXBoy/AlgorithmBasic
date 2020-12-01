@@ -1,0 +1,18 @@
+
+#include<iostream>
+#include<cstring>
+using namespace std;
+
+
+int main(void){
+    string a;
+    cin>>a;
+    int val=atoi(a.c_str());
+    cout<<val<<endl;
+//    可以输入负数！！！！
+//    -9999
+//    -9999！！！
+
+
+    return 0;
+}
