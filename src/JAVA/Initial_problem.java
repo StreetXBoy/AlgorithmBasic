@@ -12,7 +12,7 @@ public class Initial_problem {
         int n=scanner.nextInt();
 
         //动态分配！！
-        String books[] =new String[n];
+        String[] books =new String[n];
         books[0]="Java";
         books[0]="C++";
         books[0]="Golang";

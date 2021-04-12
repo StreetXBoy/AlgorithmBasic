@@ -1,0 +1,52 @@
+分布式一致性算法！
+
+
+
+3个角色
+
+
+Proposer 议案提出者
+
+Acceptor 批准者
+
+Learner  最后决策者
+
+
+ Proposer - > Acceptor
+
+Proposer Mn 向超过半数的Acceptor 子集广播 Prepare
+
+Acceptor 收到Mn如果 Mn 大于已经批准的任何值 ，则返回已经批准的最大值！并且承诺不会再批准任何小于Mn的议案
+
+Proposer 收到半数以上的Acceptor 返回值 回应  【Mn，Vn】Accept 请求给 Acceptor Vn就是收到响应编号中的最大值 如果响应为空 Vn为任意
+
+Acceptor  [Mn，Vn] 只要该Acceptor 没有对编号大于Mn的 Prepa 响应 通过议案
+
+
+Acceptor -> learner
+
+超过半数的Acceptor通过，发给learner 最后提交
+
+可以设置主learner 和辅助 learner 缓解单点压力
+
+
+
+paxos 算法 死锁问题
+
+Prosper P1 M1
+
+Prosper P2 M2
+
+M2>M1
+
+P1 的Accept 请求忽略！
+
+P1  M3
+
+M3>M2
+
+P2 的 Acceptor 请求忽略！
+
+循环等待  导致死锁
+
+解决方法 设定 主Prosper  以他为主！！！
