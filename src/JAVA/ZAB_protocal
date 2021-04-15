@@ -1,0 +1,31 @@
+不同于paxos
+
+
+
+
+三个角色
+
+
+leader
+
+
+follower
+
+
+
+observer
+
+
+
+ZAB协议简述:
+
+Leader全局唯一一个协调处理服务器
+
+Leader讲clinet 的request 转化成prospsol 分发给 follower ,一旦超过半数的follower收到反馈之后
+
+leader向follower发出commit信息，要求其讲前一个proposal进行提交
+
+
+广播 队列 zxid事务id
+
+
